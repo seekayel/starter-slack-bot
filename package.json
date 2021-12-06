@@ -1,5 +1,5 @@
 {
-  "name": "Cyclic Slack Starter Bot",
+  "name": "cyclic-starter-slack-bot",
   "version": "1.0.0",
   "description": "Starter Slack Bot",
   "main": "index.js",
