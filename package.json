@@ -1,0 +1,26 @@
+{
+  "name": "Cyclic Slack Starter Bot",
+  "version": "1.0.0",
+  "description": "Starter Slack Bot",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyclic-software/starter-slack-bot"
+  },
+  "author": "cyclic-software",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/web-api": "^6.5.0",
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
