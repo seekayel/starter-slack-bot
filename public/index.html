@@ -4,7 +4,11 @@
         <link href="/public/prism.css" rel="stylesheet" />
     </head>
     <body>
-      Use the following manifest.yaml to register with Slack:
+      Use the following manifest.yaml to register with Slack, then set the following env vars:
+      <ul>
+        <li><code>process.env.SLACK_SIGNING_SECRET=123....long...hex...string...DEF</code></li>
+        <li><code>process.env.SLACK_TOKEN=xoxb-123.......890-123.......890-AbC....alphanumeric....0Z</code></li>
+      </ul>
       <script src="/public/prism.js"></script>
       <pre><code class="language-yaml">
 _metadata:

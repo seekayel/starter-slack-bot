@@ -5,6 +5,8 @@ const { WebClient } = require('@slack/web-api');
 const token = process.env.SLACK_TOKEN;
 const web = new WebClient(token);
 const app = express()
+const fs = require('fs')
+const path = require('path')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -62,19 +64,19 @@ router.post('/events', authorize_slack, async (req, res) => {
   return res.sendStatus(200)
 })
 
-const fs = require('fs')
-const path = require('path')
-
 router.all('/', async (req,res) => {
   try {
     if(process.env.SLACK_TOKEN) {
       res.status(200)
       return res.send('Hi! Configuration complete')
     } else {
-      const manifestTemplate = fs.readFileSync(path.resolve('./config/app-manifest.yaml'))
 
-      res.status(200)
-      return res.send(manifestTemplate.toString())
+      return res.sendFile(path.resolve('./public/index.html'));
+
+      // const manifestTemplate = fs.readFileSync(path.resolve('./config/app-manifest.yaml'))
+
+      // res.status(200)
+      // return res.send(manifestTemplate.toString())
     }
   } catch(e) {
     res.status(500)
