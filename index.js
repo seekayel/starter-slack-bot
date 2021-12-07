@@ -52,15 +52,25 @@ const authorize_slack = (req,res,next)=>{
 }
 
 router.post('/events', authorize_slack, async (req, res) => {
-  let ts = req.body.event.thread_ts || req.body.event.ts
-  let channel = req.body.event.channel
-  let msg_txt = req.body.event.text
-  let resp_txt = `Hi! :wave: I heard you say:\n\n> ${msg_txt}`
-  const result = await web.chat.postMessage({
-    text: resp_txt,
-    channel,
-    thread_ts:ts
-  });
+  let event = req.body.event;
+  let ts = event.thread_ts || event.ts
+  let channel = event.channel
+  let msg_txt = event.text
+
+  // Event types defined here: https://api.slack.com/events?filter=Events
+  if (event.type === "app_mention") {
+    let resp_txt = `Hi! :wave: I heard you say:\n\n> ${msg_txt}`
+    const result = await web.chat.postMessage({
+      text: resp_txt,
+      channel,
+      thread_ts:ts
+    });
+  } else if (event.type === "message") {
+    console.log(`message: ${event.text}`)
+  } else {
+    console.log(`${event.type}: ${event.text}`)
+  }
+
   return res.sendStatus(200)
 })
 
@@ -70,13 +80,7 @@ router.all('/', async (req,res) => {
       res.status(200)
       return res.send('Hi! Configuration complete')
     } else {
-
       return res.sendFile(path.resolve('./public/index.html'));
-
-      // const manifestTemplate = fs.readFileSync(path.resolve('./config/app-manifest.yaml'))
-
-      // res.status(200)
-      // return res.send(manifestTemplate.toString())
     }
   } catch(e) {
     res.status(500)
