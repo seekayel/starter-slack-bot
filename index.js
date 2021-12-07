@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const crypto = require('crypto')
 const { WebClient } = require('@slack/web-api');
-const token = process.env.SLACK_TOKEN;
+const token = process.env.SLACK_BOT_USER_OAUTH_TOKEN;
 const web = new WebClient(token);
 const app = express()
 const fs = require('fs')
@@ -35,7 +35,7 @@ const authorize_slack = (req,res,next)=>{
   if(req.body.type === 'url_verification'){
       return res.json(req.body)
   }
-  const slackSigningSecret = process.env.SLACK_SIGNING_SECRET;
+  const slackSigningSecret = process.env.SLACK_APP_CREDENTIALS_SIGNING_SECRET;
   const requestSignature = req.headers['x-slack-signature']
   const requestTimestamp = req.headers['x-slack-request-timestamp']
   const hmac = crypto.createHmac('sha256', slackSigningSecret)

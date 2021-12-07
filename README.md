@@ -8,6 +8,10 @@ Use the `config/bot-manifest.yaml` file to create your app. Instructions are her
 
 Copy your app credentials into environment variables inside of your Cyclic account.
 
+https://api.slack.com/apps/TEAM_ID/general => `App Credentials` => `Signing Secret`
+
+https://api.slack.com/apps/TEAM_ID/install-on-team => `Bot User OAuth Token`
+
 ## Deploy
 
 Deploy this repo on Cyclic.
