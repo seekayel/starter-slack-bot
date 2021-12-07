@@ -2,6 +2,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const crypto = require('crypto')
 const { WebClient } = require('@slack/web-api');
+const manifest = require('./config/manifest');
+console.log(manifest)
+
 const token = process.env.SLACK_BOT_USER_OAUTH_TOKEN;
 const web = new WebClient(token);
 const app = express()
@@ -80,7 +83,15 @@ router.all('/', async (req,res) => {
       res.status(200)
       return res.send('Hi! Configuration complete')
     } else {
-      return res.sendFile(path.resolve('./public/index.html'));
+
+      manifest.settings.event_subscriptions.request_url = `https://${req.headers.host}`
+
+      let encodedManifest = encodeURIComponent(JSON.stringify(manifest))
+
+      let url = `https://api.slack.com/apps?new_app=1&manifest_json=${encodedManifest}`
+      console.log(url)
+      res.send(url)
+      // return res.sendFile(path.resolve('./public/index.html'));
     }
   } catch(e) {
     res.status(500)

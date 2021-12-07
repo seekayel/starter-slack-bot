@@ -7,35 +7,8 @@
     <body>
       <script src="/public/prism.js"></script>
       <ul>
+        <li>Create app: <a href="https://api.slack.com/apps?new_app=1&manifest_json=">from manifest</a></li>
         <li>Go to slack and press <a href="https://api.slack.com/apps" target="_new">Create New App</a></li>
-        <li>Use the following manifest.yaml</li>
-        <pre><code class="language-yaml">_metadata:
-  major_version: 1
-  minor_version: 1
-display_information:
-  name: Cyclic Starter Bot
-features:
-  bot_user:
-    display_name: Cyclic Starter Bot
-    always_online: false
-oauth_config:
-  scopes:
-    bot:
-      - chat:write
-      - channels:history
-      - groups:history
-      - im:history
-      - mpim:history
-      - app_mentions:read
-settings:
-  event_subscriptions:
-    request_url: https://some-subdomain.cyclic.app/events
-    bot_events:
-      - app_mention
-      - message.channels
-  org_deploy_enabled: false
-  socket_mode_enabled: false
-  token_rotation_enabled: false</code></pre>
         <li>Set each of these environment vars:
           <ul>
             <li><code>process.env.SLACK_APP_CREDENTIALS_SIGNING_SECRET=123....long...hex...string...DEF</code></li>
