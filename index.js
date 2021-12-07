@@ -66,7 +66,7 @@ router.post('/events', authorize_slack, async (req, res) => {
 
 router.all('/', async (req,res) => {
   try {
-    if(process.env.SLACK_TOKEN) {
+    if(process.env.SLACK_BOT_USER_OAUTH_TOKEN && process.env.SLACK_APP_CREDENTIALS_SIGNING_SECRET) {
       res.status(200)
       return res.send('Hi! Configuration complete')
     } else {
