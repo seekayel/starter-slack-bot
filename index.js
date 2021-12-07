@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const crypto = require('crypto')
 const { WebClient } = require('@slack/web-api');
 const manifest = require('./config/manifest');
-console.log(manifest)
 
 const token = process.env.SLACK_BOT_USER_OAUTH_TOKEN;
 const web = new WebClient(token);
