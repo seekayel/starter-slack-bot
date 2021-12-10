@@ -10,8 +10,8 @@ const app = express()
 const fs = require('fs')
 const path = require('path')
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 const router = express.Router()
 
@@ -19,8 +19,13 @@ const router = express.Router()
 // Configure the saving of the raw body to be used in slack signature authorization
 router.use(bodyParser.json({
   verify: (req, res, buf) => {
+
+    console.log('===============================================================')
+    console.log('===============================================================')
+    console.log('===============================================================')
+
     req.rawBody = buf
-    console.log(`rawBody: ${req.rawBody}`)
+    console.log(`rawBody: ${req.rawBody.toString}`)
   }
 }))
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -42,6 +47,12 @@ app.use('/public', express.static('public', options))
 // #############################################################################
 // Check if the inbound call is actually from slack
 const authorize_slack = (req,res,next)=>{
+  console.log('===============================================================')
+  console.log(JSON.stringify(req.rawBody,null,2))
+
+
+
+
   if(req.body.type === 'url_verification'){
       return res.json(req.body)
   }
@@ -53,15 +64,18 @@ const authorize_slack = (req,res,next)=>{
   const base = `${version}:${requestTimestamp}:${req.rawBody}`
   hmac.update(base);
 
+  console.log('===============================================================')
+  console.log(JSON.stringify(req.rawBody,null,2))
+
   console.log(`base: ${base}\n\nhash: ${hash}`)
 
   if(hash!==hmac.digest('hex')){
     console.log('Unauthorized request, must not be from slack')
 
-    res.sendStatus(403)
-    res.end()
+    // res.sendStatus(403)
+    // res.end()
 
-    return
+    return res.sendStatus(200)
   }
   return next()
 }
