@@ -74,7 +74,7 @@ router.post('/events', authorize_slack, async (req, res) => {
 
   // Event types defined here: https://api.slack.com/events?filter=Events
   if (event.type === "app_mention") {
-    let resp_txt = `Hi <@${event.user}! :smile: I heard you say:\n\n> ${msg_txt}`
+    let resp_txt = `Hi <@${event.user}>! :smile: I heard you say:\n\n> ${msg_txt}`
     const result = await web.chat.postMessage({
       text: resp_txt,
       channel,
