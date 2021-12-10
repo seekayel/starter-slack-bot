@@ -17,12 +17,12 @@ const router = express.Router()
 
 // #############################################################################
 // Configure the saving of the raw body to be used in slack signature authorization
-const rawBodySaver =  (req, res, buf, encoding) =>{
-  if (buf && buf.length) {
-    req.rawBody = buf.toString(encoding || 'utf8');
+router.use(bodyParser.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf
+    console.log(`rawBody: ${req.rawBody}`)
   }
-}
-router.use(bodyParser.json({verify: rawBodySaver}))
+}))
 router.use(bodyParser.urlencoded({ extended: true }))
 
 // #############################################################################
