@@ -38,17 +38,22 @@ const authorize_slack = (req,res,next)=>{
       return res.json(req.body)
   }
   const slackSigningSecret = process.env.SLACK_APP_CREDENTIALS_SIGNING_SECRET;
-  const requestSignature = req.headers['x-slack-signature']
+  const requestSignature = req.headers['x-slack-signature'] || '='
   const requestTimestamp = req.headers['x-slack-request-timestamp']
   const hmac = crypto.createHmac('sha256', slackSigningSecret)
   const [version, hash] = requestSignature.split('=')
   const base = `${version}:${requestTimestamp}:${JSON.stringify(req.body)}`
   hmac.update(base);
+
+  console.log(`base: ${base}\nhash: ${hash}`)
+
   if(hash!==hmac.digest('hex')){
     console.log('unauthorized request from slack')
-    console.log(req.headers)
-    console.log(req.body)
-    return res.sendStatus(200)
+
+    res.sendStatus(200)
+    res.end()
+
+    return
   }
   return next()
 }
