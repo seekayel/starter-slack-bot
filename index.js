@@ -58,7 +58,7 @@ const authorize_slack = (req,res,next)=>{
     // res.sendStatus(403)
     // res.end()
 
-    return res.sendStatus(200)
+    return res.sendStatus(401)
   }
   return next()
 }
@@ -68,6 +68,9 @@ router.post('/events', authorize_slack, async (req, res) => {
   let ts = event.thread_ts || event.ts
   let channel = event.channel
   let msg_txt = event.text
+
+
+  console.log(`got[${event.type}]: ${event.text}`)
 
   // Event types defined here: https://api.slack.com/events?filter=Events
   if (event.type === "app_mention") {
@@ -80,7 +83,7 @@ router.post('/events', authorize_slack, async (req, res) => {
   } else if (event.type === "message") {
     console.log(`got message: ${event.text}`)
   } else {
-    console.log(`got[${event.type}]: ${event.text}`)
+    console.log(`unknown message type`)
   }
 
   return res.sendStatus(200)
