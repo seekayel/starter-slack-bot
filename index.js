@@ -24,8 +24,8 @@ router.use(bodyParser.json({
     console.log('===============================================================')
     console.log('===============================================================')
 
-    req.rawBody = buf
-    console.log(`rawBody: ${req.rawBody.toString}`)
+    req.rawBody = buf.toString()
+    console.log(`rawBody: ${req.rawBody}`)
   }
 }))
 router.use(bodyParser.urlencoded({ extended: true }))
