@@ -14,6 +14,21 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const router = express.Router()
+
+// #############################################################################
+// Configure the saving of the raw body to be used in slack signature authorization
+app.use(function(req, res, next) {
+  req.rawBody = '';
+  req.setEncoding('utf8');
+
+  req.on('data', function(chunk) {
+    req.rawBody += chunk;
+  });
+
+  req.on('end', function() {
+    next();
+  });
+});
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
@@ -42,15 +57,15 @@ const authorize_slack = (req,res,next)=>{
   const requestTimestamp = req.headers['x-slack-request-timestamp']
   const hmac = crypto.createHmac('sha256', slackSigningSecret)
   const [version, hash] = requestSignature.split('=')
-  const base = `${version}:${requestTimestamp}:${JSON.stringify(req.body)}`
+  const base = `${version}:${requestTimestamp}:${req.rawBody}`
   hmac.update(base);
 
-  console.log(`base: ${base}\nhash: ${hash}`)
+  console.log(`base: ${base}\n\nhash: ${hash}`)
 
   if(hash!==hmac.digest('hex')){
-    console.log('unauthorized request from slack')
+    console.log('Unauthorized request, must not be from slack')
 
-    res.sendStatus(200)
+    res.sendStatus(403)
     res.end()
 
     return
